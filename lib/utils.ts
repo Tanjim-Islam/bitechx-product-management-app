@@ -5,13 +5,12 @@ export const toQuery = (q: Record<string, string | number | undefined>) =>
     .map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(String(v))}`)
     .join("&");
 
-export const fallbackImage = "https://i.imgur.com/QkIa5tT.jpeg";
+export const fallbackImage = "https://placehold.co/600x400.png";
 export function sanitizeImageUrl(u?: string): string {
   if (!u) return fallbackImage;
   try {
     const url = new URL(u);
     const host = url.hostname.toLowerCase();
-    if (host.includes("placehold.co")) return fallbackImage;
     if (host.includes("istockphoto.com")) return fallbackImage;
     if (url.pathname.endsWith(".svg")) return fallbackImage;
     return u;
