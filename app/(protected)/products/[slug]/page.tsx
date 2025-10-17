@@ -40,8 +40,7 @@ function DetailsInner() {
   return (
     <div className="grid gap-6 md:grid-cols-2">
       <div className="space-y-3">
-        <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl bg-anti_flash_white-900 shadow-soft">
-          {/* <Image src={p.images?.[0] || "https://i.imgur.com/QkIa5tT.jpeg"} alt={p.name} fill className="object-cover" /> */}
+        <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl bg-anti_flash_white-900 shadow">
           <Image src={sanitizeImageUrl(p.images?.[0])} alt={p.name} fill className="object-cover" />
         </div>
       </div>

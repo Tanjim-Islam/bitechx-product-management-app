@@ -1,5 +1,5 @@
 export function Card({ children, className = "" }: { children: React.ReactNode; className?: string }) {
-  return <div className={`rounded-2xl bg-anti_flash_white-900 shadow-soft ${className}`}>{children}</div>;
+  return <div className={`rounded-2xl bg-anti_flash_white-900 shadow ${className}`}>{children}</div>;
 }
 export function CardHeader({ title, action }: { title: string; action?: React.ReactNode }) {
   return (

@@ -4,35 +4,31 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Input from "@/components/ui/input";
 import Button from "@/components/ui/button";
-import { useAppDispatch } from "@/lib/hooks";
-import { setAuth } from "@/features/auth/auth-slice";
-import { apiBase } from "@/lib/utils";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { useLoginMutation } from "@/features/api/auth-api";
 
 const S = z.object({ email: z.string().email("Enter a valid email") });
 type T = z.infer<typeof S>;
 
 export default function LoginPage() {
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<T>({ resolver: zodResolver(S) });
-  const d = useAppDispatch();
   const r = useRouter();
+  const [login] = useLoginMutation();
 
   const onSubmit = async (v: T) => {
     try {
-      const res = await fetch(`${apiBase}/auth`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email: v.email }) });
-      if (!res.ok) throw new Error("Auth failed");
-      const data = await res.json();
-      d(setAuth({ email: v.email, token: data.token }));
+      const data = await login({ email: v.email }).unwrap();
       toast.success("Logged in");
       r.replace("/products");
     } catch (e: any) {
-      toast.error(e.message || "Login error");
+      const message = e?.data?.message || e?.message || "Login error";
+      toast.error(message);
     }
   };
 
   return (
-    <div className="mx-auto mt-16 max-w-md rounded-2xl bg-anti_flash_white-900 p-6 shadow-soft">
+    <div className="mx-auto mt-16 max-w-md rounded-2xl bg-anti_flash_white-900 p-6 shadow">
       <h1 className="mb-4 text-2xl font-semibold">Login</h1>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div>

@@ -4,7 +4,7 @@ export default function Input(props: React.InputHTMLAttributes<HTMLInputElement>
   return (
     <input
       className={clsx(
-        "w-full rounded-xl border border-rich_black/10 bg-anti_flash_white-900 px-3 py-2 text-sm shadow-soft focus:border-hookers_green focus:outline-none focus-visible:ring-2 focus-visible:ring-hookers_green"
+        "w-full rounded-xl border border-rich_black/10 bg-anti_flash_white-900 px-3 py-2 text-sm shadow focus:border-hookers_green focus:outline-none focus-visible:ring-2 focus-visible:ring-hookers_green"
       )}
       {...props}
     />

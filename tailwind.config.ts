@@ -10,8 +10,7 @@ const config: Config = {
         lion: { DEFAULT: "#ad8a64", 100: "#241c13", 200: "#483826", 300: "#6c5339", 400: "#906f4c", 500: "#ad8a64", 600: "#bea284", 700: "#ceb9a3", 800: "#dfd1c2", 900: "#efe8e0" },
         chestnut: { DEFAULT: "#a44a3f", 100: "#210f0d", 200: "#421e1a", 300: "#632e27", 400: "#843d33", 500: "#a44a3f", 600: "#c0695d", 700: "#d08e86", 800: "#e0b4ae", 900: "#efd9d7" }
       },
-      borderRadius: { xl: "1rem", "2xl": "1.25rem" },
-      boxShadow: { soft: "0 6px 24px rgba(13,24,33,0.08)" }
+      borderRadius: { xl: "1rem", "2xl": "1.25rem" }
     }
   },
   plugins: []
