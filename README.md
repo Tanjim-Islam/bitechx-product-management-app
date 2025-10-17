@@ -72,3 +72,6 @@ Base URL: https://api.bitechx.com
 - Create validates fields; invalid price shows inline error.
 - Edit pre-fills values, re-validates, and redirects to the updated product slug so the details page shows fresh data immediately.
 - Delete confirms; page navigates to list. List is optimistically updated and refetched.
+
+## Extra Features
+- Recently viewed chips above the products grid keep a local ring buffer (`btx_recent_products`) of the last eight unique products you opened. Chips show thumbnails, category badges, and a clear-all control, and they refresh themselves across tabs via storage events.

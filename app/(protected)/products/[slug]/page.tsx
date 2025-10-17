@@ -8,6 +8,8 @@ import Button from "@/components/ui/button";
 import ConfirmDelete from "@/components/confirm-delete";
 import { toast } from "sonner";
 import { sanitizeImageUrl } from "@/lib/utils";
+import { useEffect } from "react";
+import { addRecentProduct } from "@/lib/recent-products";
 
 export default function DetailsPage() {
   return (
@@ -22,6 +24,18 @@ function DetailsInner() {
   const { data, isLoading, isError } = useGetBySlugQuery(slug);
   const [del] = useDeleteProductMutation();
   const r = useRouter();
+
+  useEffect(() => {
+    if (!data) return;
+    addRecentProduct({
+      id: data.id,
+      name: data.name,
+      slug: data.slug,
+      image: sanitizeImageUrl(data.images?.[0]),
+      categoryName: data.category?.name,
+      viewedAtISO: new Date().toISOString()
+    });
+  }, [data]);
 
   if (isLoading) return <p>Loading...</p>;
   if (isError || !data) return <p className="text-chestnut">Failed to load product.</p>;

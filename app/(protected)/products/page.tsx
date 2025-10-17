@@ -6,6 +6,7 @@ import SearchBar from "@/components/search-bar";
 import CategoryFilter from "@/components/category-filter";
 import Pagination from "@/components/pagination";
 import ProductCard from "@/components/product-card";
+import RecentChips from "@/components/recent-chips";
 import Skeleton from "@/components/ui/skeleton";
 import { toast } from "sonner";
 
@@ -46,6 +47,8 @@ function ProductsInner() {
           <CategoryFilter value={cat} onChange={setCat} />
         </div>
       </div>
+
+      <RecentChips />
 
       {loading && (
         <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
