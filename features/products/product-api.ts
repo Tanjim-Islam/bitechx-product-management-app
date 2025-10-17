@@ -26,10 +26,90 @@ export const productApi = api.injectEndpoints({
     getBySlug: b.query<Product, string>({ query: (slug) => ({ url: `/products/${slug}` }), providesTags: (_r, _e, slug) => [{ type: "Product", id: slug }] }),
     createProduct: b.mutation<Product, CreateBody>({
       query: (body) => ({ url: `/products`, method: "POST", body }),
+      async onQueryStarted(body, { dispatch, queryFulfilled }) {
+        const tempId = `temp-${Date.now()}`;
+        const placeholder: Product = {
+          id: tempId,
+          name: body.name,
+          description: body.description,
+          images: body.images,
+          price: body.price,
+          slug: `temp-slug-${Date.now()}`,
+          categoryId: body.categoryId,
+          category: null,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString()
+        };
+        
+        const patchers: Array<() => void> = [];
+        const commonArgs: Array<ListArgs | void> = [undefined, { offset: 0, limit: 12 }];
+        
+        for (const args of commonArgs) {
+          const p = dispatch(
+            productApi.util.updateQueryData("listProducts", args as any, (draft) => {
+              if (Array.isArray(draft)) {
+                draft.unshift(placeholder);
+              }
+            })
+          );
+          patchers.push(p.undo);
+        }
+        
+        try {
+          const result = await queryFulfilled;
+          for (const args of commonArgs) {
+            dispatch(
+              productApi.util.updateQueryData("listProducts", args as any, (draft) => {
+                if (Array.isArray(draft)) {
+                  const idx = draft.findIndex((x) => x.id === tempId);
+                  if (idx !== -1) {
+                    draft[idx] = result.data;
+                  }
+                }
+              })
+            );
+          }
+        } catch {
+          patchers.forEach((u) => u());
+        }
+      },
       invalidatesTags: ["Products", "Categories"]
     }),
     updateProduct: b.mutation<Product, UpdateArgs>({
       query: ({ id, patch }) => ({ url: `/products/${id}`, method: "PUT", body: patch }),
+      async onQueryStarted({ id, slug, patch }, { dispatch, queryFulfilled }) {
+        const patchers: Array<() => void> = [];
+        
+        const listPatches = dispatch(
+          productApi.util.updateQueryData("listProducts", undefined as any, (draft) => {
+            if (Array.isArray(draft)) {
+              const idx = draft.findIndex((x) => x.id === id);
+              if (idx !== -1) {
+                draft[idx] = { ...draft[idx], ...patch };
+              }
+            }
+          })
+        );
+        patchers.push(listPatches.undo);
+        
+        const detailPatch = dispatch(
+          productApi.util.updateQueryData("getBySlug", slug, (draft) => {
+            Object.assign(draft, patch);
+          })
+        );
+        patchers.push(detailPatch.undo);
+        
+        try {
+          const result = await queryFulfilled;
+          if (result.data.slug !== slug) {
+            dispatch(
+              productApi.util.updateQueryData("getBySlug", result.data.slug, () => result.data)
+            );
+          }
+        } catch {
+          patchers.forEach((u) => u());
+        }
+      },
       invalidatesTags: (result, _e, arg) => {
         const tags: any[] = [{ type: "Product", id: arg.slug }, "Products", "Categories"];
         if (result?.slug && result.slug !== arg.slug) tags.push({ type: "Product", id: result.slug });
