@@ -25,7 +25,7 @@ export default function HotkeyHint({ onShowHelp }: { onShowHelp: () => void }) {
     <div
       role="status"
       aria-live="polite"
-      className="fixed bottom-4 left-4 z-40 w-80 rounded-2xl bg-anti_flash_white-900 p-4 shadow-lg"
+      className="fixed bottom-4 left-4 z-40 w-80 rounded-2xl bg-anti_flash_white-900 p-4 shadow-lg hidden md:block"
     >
       <div className="flex items-start justify-between gap-2">
         <div className="flex-1">

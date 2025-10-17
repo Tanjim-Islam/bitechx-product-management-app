@@ -78,3 +78,6 @@ Base URL: https://api.bitechx.com
 - Product cards prefetch their detail pages on hover, focus, or when entering the viewport on touch devices so navigation feels instant while respecting offline and data-saver conditions.
 - Keyboard-first productivity: global hotkeys (`/`, `N`, `J`, `K`, `Esc`, `Enter`) work across the app, surfaced via an onboarding hint (`btx_hint_hotkeys_dismissed`) and a Help modal listing every shortcut.
 - Product mutations are optimistic—create inserts a placeholder row, update patches list/detail caches, and delete removes immediately with automatic rollback on failure—keeping the catalog snappy even before the server responds.
+- Category chips fetch top categories, render accessible toggles with `aria-pressed`, and sync selection with the URL `categoryId` parameter for shareable filtering.
+- Product compare lets you select up to two products, surfaces a floating `Compare` button, and opens the responsive `CompareModal` for side-by-side review with clear/close controls.
+- Activity timeline on product details displays created/updated timestamps via `ActivityTimeline`, including relative formatting, ISO tooltips, and clipboard copy actions with toast feedback.

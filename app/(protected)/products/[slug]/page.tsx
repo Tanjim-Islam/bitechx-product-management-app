@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import { sanitizeImageUrl } from "@/lib/utils";
 import { useEffect } from "react";
 import { addRecentProduct } from "@/lib/recent-products";
+import ActivityTimeline from "@/components/activity-timeline";
 
 export default function DetailsPage() {
   return (
@@ -58,15 +59,21 @@ function DetailsInner() {
           <Image src={sanitizeImageUrl(p.images?.[0])} alt={p.name} fill className="object-cover" />
         </div>
       </div>
-      <div>
-        <h1 className="text-2xl font-semibold">{p.name}</h1>
-        <p className="mt-2 text-rich_black/70">{p.description}</p>
-        <div className="mt-4 text-lg font-semibold">$ {p.price}</div>
-        <div className="mt-2 text-sm text-rich_black/60">Category: {p.category?.name}</div>
-        <div className="mt-6 flex gap-2">
-          <Link href={`/products/${p.slug}/edit`}><Button>Edit</Button></Link>
-          <ConfirmDelete onConfirm={handleDelete} />
+      <div className="space-y-6">
+        <div>
+          <h1 className="text-2xl font-semibold">{p.name}</h1>
+          <p className="mt-2 text-rich_black/70">{p.description}</p>
+          <div className="mt-4 text-lg font-semibold">$ {p.price}</div>
+          <div className="mt-2 text-sm text-rich_black/60">Category: {p.category?.name}</div>
+          <div className="mt-6 flex gap-2">
+            <Link href={`/products/${p.slug}/edit`}><Button>Edit</Button></Link>
+            <ConfirmDelete onConfirm={handleDelete} />
+          </div>
         </div>
+        <ActivityTimeline entries={[
+          { label: "Created", timestamp: p.createdAt },
+          { label: "Last updated", timestamp: p.updatedAt }
+        ]} />
       </div>
     </div>
   );
