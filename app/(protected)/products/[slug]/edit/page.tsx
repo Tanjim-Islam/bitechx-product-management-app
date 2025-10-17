@@ -28,9 +28,9 @@ function EditInner() {
 
   const onSubmit = async (v: PT) => {
     try {
-      await upd({ id: p.id, patch: { name: v.name, description: v.description, images: v.images, price: v.price, categoryId: v.categoryId } }).unwrap();
+      const result = await upd({ id: p.id, slug, patch: { name: v.name, description: v.description, images: v.images, price: v.price, categoryId: v.categoryId } }).unwrap();
       toast.success("Updated");
-      r.replace(`/products/${slug}`);
+      r.replace(`/products/${result.slug}`);
     } catch (e: any) {
       toast.error(e?.message || "Update failed");
     }

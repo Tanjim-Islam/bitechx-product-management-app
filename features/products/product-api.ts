@@ -3,6 +3,7 @@ import type { Product } from "@/types";
 
 type ListArgs = { offset?: number; limit?: number; categoryId?: string };
 type CreateBody = { name: string; description: string; images: string[]; price: number; categoryId: string };
+type UpdateArgs = { id: string; slug: string; patch: Partial<CreateBody> & { name?: string; description?: string } };
 
 export const productApi = api.injectEndpoints({
   endpoints: (b) => ({
@@ -27,9 +28,13 @@ export const productApi = api.injectEndpoints({
       query: (body) => ({ url: `/products`, method: "POST", body }),
       invalidatesTags: ["Products", "Categories"]
     }),
-    updateProduct: b.mutation<Product, { id: string; patch: Partial<CreateBody> & { name?: string; description?: string } }>({
+    updateProduct: b.mutation<Product, UpdateArgs>({
       query: ({ id, patch }) => ({ url: `/products/${id}`, method: "PUT", body: patch }),
-      invalidatesTags: (_r, _e, arg) => [{ type: "Product", id: arg.id }, "Products", "Categories"]
+      invalidatesTags: (result, _e, arg) => {
+        const tags: any[] = [{ type: "Product", id: arg.slug }, "Products", "Categories"];
+        if (result?.slug && result.slug !== arg.slug) tags.push({ type: "Product", id: result.slug });
+        return tags;
+      }
     }),
     deleteProduct: b.mutation<{ id: string }, { id: string}>({
       query: ({ id }) => ({ url: `/products/${id}`, method: "DELETE" }),
