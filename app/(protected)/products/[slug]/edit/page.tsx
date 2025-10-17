@@ -24,7 +24,7 @@ function EditInner() {
   if (isError || !data) return <p className="text-chestnut">Failed to load product.</p>;
   const p = data;
 
-  const init = { name: p.name, description: p.description, images: p.images, price: p.price, categoryId: p.category.id };
+  const init = { name: p.name, description: p.description, images: p.images, price: p.price, categoryId: p.category?.id ?? p.categoryId ?? "" };
 
   const onSubmit = async (v: PT) => {
     try {
