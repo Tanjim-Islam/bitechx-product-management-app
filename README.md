@@ -75,3 +75,4 @@ Base URL: https://api.bitechx.com
 
 ## Extra Features
 - Recently viewed chips above the products grid keep a local ring buffer (`btx_recent_products`) of the last eight unique products you opened. Chips show thumbnails, category badges, and a clear-all control, and they refresh themselves across tabs via storage events.
+- Product cards prefetch their detail pages on hover, focus, or when entering the viewport on touch devices so navigation feels instant while respecting offline and data-saver conditions.
