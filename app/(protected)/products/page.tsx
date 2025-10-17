@@ -36,7 +36,9 @@ function ProductsInner() {
   const data = useMemo(() => (q.trim().length >= 2 ? search.data : listing.data), [q, search.data, listing.data]);
   const loading = listing.isLoading || search.isLoading;
 
-  useEffect(() => { setOffset(0); }, [q, cat]);
+  useEffect(() => {
+    setOffset(0);
+  }, [q, cat]);
 
   return (
     <div className="space-y-4">
