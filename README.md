@@ -3,7 +3,7 @@
 A Next.js App Router app to browse, create, edit, view, and delete products using the BiTechX API.
 
 ## Overview
-- Auth via POST `/auth` (email only). JWT persisted in `localStorage` under `btx_auth` and injected on all API calls.
+- Auth via POST `/auth` (email only), executed through an RTK Query mutation. JWT persists in `localStorage` under `btx_auth` and is injected on all API calls.
 - Products: list, search (debounced), filter by category, paginate, create, edit, delete (simulated) with confirmation.
 - Strict color palette with Tailwind theme. Responsive and accessible UI.
 - Redux Toolkit + RTK Query for state, caching, and tag-based invalidation.
@@ -70,5 +70,5 @@ Base URL: https://api.bitechx.com
 - Search (debounced 350 ms), clears back to list.
 - Category filter works with pagination.
 - Create validates fields; invalid price shows inline error.
-- Edit pre-fills values and re-validates.
+- Edit pre-fills values, re-validates, and redirects to the updated product slug so the details page shows fresh data immediately.
 - Delete confirms; page navigates to list. List is optimistically updated and refetched.
